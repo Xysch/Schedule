@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.entities.Classes" table="CLASSES">
+        <id name="id" type="int">
+            <column name="ID" precision="5" scale="0" />
+            <generator class="native" />
+        </id>
+        <property name="time" type="java.lang.String">
+            <column name="TIME" length="20" not-null="true"/>
+        </property>
+        <property name="aud" type="java.lang.String">
+            <column name="AUD" length="20" not-null="true"/>
+        </property>
+        <property name="even" type="java.lang.String">
+            <column name="EVEN" length="20" not-null="true"/>
+        </property>
+        <property name="day" type="java.lang.String">
+            <column name="DAY" length="20" not-null="true"/>
+        </property>
+        <property name="disc" type="java.lang.String">
+            <column name="DISCIPLINE_NAME" length="20" not-null="false"/>
+        </property>
+        <many-to-one name="prof" class="com.entities.Professors">
+            <column name="PROF_ID"/>
+        </many-to-one>
+        <set name="groups" table="classes_by_group"
+              lazy="true" fetch="select" cascade="all" >
+            <key>
+                <column name="ID" not-null="true" />
+            </key>
+            <many-to-many entity-name="com.entities.StudGroup">
+                <column name="STUD_GROUP_ID" not-null="true" />
+            </many-to-many>
+        </set>
+
+
+    </class>
+</hibernate-mapping>
