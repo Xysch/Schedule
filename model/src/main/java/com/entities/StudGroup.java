@@ -47,7 +47,8 @@ public class StudGroup {
         this.stud = stud;
     }
 
-
-
-
+    @Override
+    public String toString() {
+        return this.getName();
+    }
 }

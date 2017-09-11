@@ -15,13 +15,24 @@
 
     <title>Add user</title>
 
+    <link href="${contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${contextPath}/resources/css/common.css" rel="stylesheet">
+
+
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+
 <body>
 
 <div class="container">
 
 
+    <%--@elvariable id="userForm" type="com.entities.Students"--%>
     <form:form method="POST" modelAttribute="userForm" class="form-signin">
-        <h2 class="form-signin-heading">Create your account</h2>
+        <h2 class="form-signin-heading">Add user</h2>
+
+        <input action="action" type="button" onclick="history.go(-1);" type="button" value="Back" />
+
         <spring:bind path="username">
             <div class="form-group ${status.error ? 'has-error' : ''}">
                 <form:input type="text" path="username" class="form-control" placeholder="Username"
@@ -77,6 +88,7 @@
             <div class="form-group ${status.error ? 'has-error' : ''}">
                 <form:input type="text" path="groupName" class="form-control"
                             placeholder="Set group"></form:input>
+                <form:errors path="groupName"></form:errors>
             </div>
         </spring:bind>
 
@@ -86,5 +98,7 @@
     </form:form>
 
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="${contextPath}/resources/js/bootstrap.min.js"></script>
 </body>
 </html>

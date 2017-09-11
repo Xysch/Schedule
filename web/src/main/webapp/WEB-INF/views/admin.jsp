@@ -11,8 +11,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-
     <title>Admin</title>
+    <link href="${contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
 
 </head>
 
@@ -26,8 +26,10 @@
         </h2>
         <h4 class="text-center"><a href="${contextPath}/registration">Create an account</a></h4>
         <h4 class="text-center"><a href="${contextPath}/students">Edit students</a></h4>
+        <h4 class="text-center"><a href="${contextPath}/grouplist">Edit groups and classes</a></h4>
     </c:if>
 </div>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="${contextPath}/resources/js/bootstrap.min.js"></script>
 </body>
 </html>

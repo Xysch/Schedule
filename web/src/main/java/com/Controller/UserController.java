@@ -1,11 +1,16 @@
 package com.Controller;
 
-import com.dao.StudGroupDao;
-import com.entities.StudGroup;
-import com.entities.Students;
+import Comparator.TimeComparator;
+import com.entities.*;
+import com.services.ClassesService;
+import com.services.StudGroupService;
 import com.services.UserService;
+import com.validator.EditUserValidator;
 import com.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -15,7 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.validation.Valid;
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -27,6 +32,15 @@ public class UserController {
 
     @Autowired
     private UserValidator userValidator;
+
+    @Autowired
+    private EditUserValidator editValidator;
+
+    @Autowired
+    private StudGroupService groupService;
+
+    @Autowired
+    private ClassesService classesService;
 
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String registration(Model model) {
@@ -45,7 +59,7 @@ public class UserController {
 
         userService.save(userForm);
 
-        return "registration";
+        return "redirect/students";
     }
 
 
@@ -62,27 +76,36 @@ public class UserController {
 
 
 
-    @RequestMapping(value = { "/edit-user-{userForm}" }, method = RequestMethod.GET)
-    public String editUser(@ModelAttribute("userForm") Students userForm, Model model) {
-        Students user = userService.findByUsername(userForm.getUsername());
-        model.addAttribute("student", user);
-        return "registration";
+    @RequestMapping(value = { "/edit-user-{username}" }, method = RequestMethod.GET)
+    public String editUser(@PathVariable String username, Model model) {
+        Students user = userService.findByUsername(username);
+        try {
+            user.setGroupName(userService.getGroupById(user.getGroup().getId()).getName());
+        }
+        catch (NullPointerException e){
+            user.setGroupName("");
+        }
+        user.setConfirmPassword(user.getPassword());
+        model.addAttribute("user", user);
+        return "edit";
     }
 
 
-    @RequestMapping(value = { "/edit-user-{userForm}" }, method = RequestMethod.POST)
-    public String updateUser(@Valid Students userForm, BindingResult result,
-                             ModelMap model) {
+    @RequestMapping(value = { "/edit-user-{username}" }, method = RequestMethod.POST)
+    public String updateUser(@ModelAttribute("user") Students user, BindingResult result, Model model, @PathVariable String username) {
+        editValidator.validate(user, result);
 
         if (result.hasErrors()) {
-            return "update";
+            return "edit";
         }
 
-        userService.updateUser(userForm);
 
-        model.addAttribute("success", "User " + userForm.getfName() + " " + userForm.getlName() + " updated successfully");
-        return "registration";
+        userService.updateUser(user);
+
+        return "students";
     }
+
+
 
     @RequestMapping(value = { "/delete-user-{username}" }, method = RequestMethod.GET)
     public String deleteUser(@PathVariable String username) {
@@ -96,7 +119,6 @@ public class UserController {
         return "welcome";
     }
 
-
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public String admin(Model model) {
         return "admin";
@@ -107,7 +129,15 @@ public class UserController {
     public String listUsers(ModelMap model) {
 
         List<Students> users = userService.findAll();
+        Students admin = new Students();
+        int i=1;
         for(Students stud: users){
+            if(i==1){
+                if(stud.getUsername().equals("admin")){
+                    admin = stud;
+                    i--;
+                }
+            }
             try{
                 StudGroup grp = stud.getGroup();
                 Long id = grp.getId();
@@ -119,7 +149,40 @@ public class UserController {
                 stud.setGroupName("No group");
             }
         }
+        users.remove(admin);
         model.addAttribute("users", users);
         return "students";
     }
+
+    @RequestMapping(value = { "/userpage" }, method = RequestMethod.GET)
+    public String editGroup(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        StudGroup group = groupService.findById(userService.findByUsername(username).getGroup().getId());
+        TimeComparator timeComparator = new TimeComparator();
+        List<Classes> classesMonday = classesService.findByGroupAndDay(group, "Monday");
+        Collections.sort(classesMonday, timeComparator);
+        List<Classes> classesTuesday = classesService.findByGroupAndDay(group, "Tuesday");
+        Collections.sort(classesTuesday, timeComparator);
+        List<Classes> classesWednesday = classesService.findByGroupAndDay(group, "Wednesday");
+        Collections.sort(classesWednesday, timeComparator);
+        List<Classes> classesThursday = classesService.findByGroupAndDay(group, "Thursday");
+        Collections.sort(classesThursday, timeComparator);
+        List<Classes> classesFriday = classesService.findByGroupAndDay(group, "Friday");
+        Collections.sort(classesFriday, timeComparator);
+        List<Classes> classesSaturday = classesService.findByGroupAndDay(group, "Saturday");
+        Collections.sort(classesSaturday, timeComparator);
+
+        model.addAttribute("mondayClasses", classesMonday);
+        model.addAttribute("tuesdayClasses", classesTuesday);
+        model.addAttribute("wednesdayClasses", classesWednesday);
+        model.addAttribute("thursdayClasses", classesThursday);
+        model.addAttribute("fridayClasses", classesFriday);
+        model.addAttribute("saturdayClasses", classesSaturday);
+
+        return "userpage";
+    }
+
+
 }

@@ -5,16 +5,22 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <title>Users List</title>
+
+    <link href="${contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${contextPath}/resources/css/common.css" rel="stylesheet">
 </head>
 
 <body>
+
 <div class="generic-container">
     <div class="panel panel-default">
         <!-- Default panel contents -->
         <div class="panel-heading"><span class="lead">List of Users </span></div>
+
         <table class="table table-hover">
             <thead>
             <tr>
+                <th>id</th>
                 <th>username</th>
                 <th>fName</th>
                 <th>lName</th>
@@ -28,6 +34,7 @@
             <tbody>
             <c:forEach items="${users}" var="user">
                 <tr>
+                    <td>${user.id}</td>
                     <td>${user.username}</td>
                     <td>${user.fName}</td>
                     <td>${user.lName}</td>
@@ -49,5 +56,6 @@ custom-width">delete</a></td>
         <a href="<c:url value='/registration' />">Add New User</a>
     </div>
 </div>
+
 </body>
 </html>

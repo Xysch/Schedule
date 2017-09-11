@@ -4,7 +4,7 @@
 <hibernate-mapping>
     <class name="com.entities.Students" table="STUDENTS">
         <id name="id" type="java.lang.Long">
-            <column name="ST_ID" precision="5" scale="0" />
+            <column name="ST_ID" precision="5" scale="0"/>
             <generator class="native" />
         </id>
         <property name="fName" type="java.lang.String">

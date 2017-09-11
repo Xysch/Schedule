@@ -8,10 +8,12 @@ package com.services.implimentations;
         import com.entities.UserRole;
         import com.services.UserService;
         import org.springframework.beans.factory.annotation.Autowired;
+        import org.springframework.data.jpa.repository.Modifying;
         import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
         import org.springframework.stereotype.Service;
         import org.springframework.transaction.annotation.Transactional;
 
+        import java.util.Arrays;
         import java.util.HashSet;
         import java.util.List;
         import java.util.Set;
@@ -40,7 +42,6 @@ public class UserServiceImpl implements UserService {
         userDao.save(user);
     }
 
-
     public Students findByUsername(String username){
         return userDao.findByUsername(username);
     }
@@ -50,20 +51,28 @@ public class UserServiceImpl implements UserService {
     }
 
     public void updateUser(Students user){
-        Students entity = userDao.findById(user.getId());
-        if(entity!=null){
-            entity.setUsername(user.getUsername());
-            entity.setGroup(user.getGroup());
-            entity.setlName(user.getlName());
-            entity.setfName(user.getfName());
-            entity.setMail(user.getMail());
-            entity.setPhone(user.getPhone());
-        }
+        Set<UserRole> roles = new HashSet<>();
+        roles.add(roleDao.getOne(1361L));
+        user.setUserRole(roles);
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setGroup(groupDao.findByName(user.getGroupName()));
+        userDao.save(user);
+    }
+
+    @Transactional
+    public Students findById(Long id){
+        Students stud = userDao.getOne(id);
+        return stud;
     }
 
     @Transactional
     public void deleteByUsername(String username){
         userDao.deleteByUsername(username);
+    }
+
+    //For student registration only
+    public StudGroup findGroupByStudent(Students user){
+        return groupDao.findByName(user.getGroupName());
     }
 
     public StudGroup getGroupById(Long id){

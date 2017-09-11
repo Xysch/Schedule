@@ -1,5 +1,6 @@
 package com.validator;
 
+import com.dao.StudGroupDao;
 import com.entities.Students;
 import com.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,10 @@ public class UserValidator implements Validator {
 
         if (!user.getConfirmPassword().equals(user.getPassword())) {
             errors.rejectValue("confirmPassword", "Different.userForm.password");
+        }
+
+        if(user.getGroupName() != "" && user.getGroupName()!= null && userService.findGroupByStudent(user) == null){
+            errors.rejectValue("groupName", "NoGroup.userForm.groupName");
         }
     }
 }

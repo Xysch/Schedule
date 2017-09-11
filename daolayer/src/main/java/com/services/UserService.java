@@ -19,5 +19,7 @@ public interface UserService{
 
     StudGroup getGroupById(Long id);
 
+    StudGroup findGroupByStudent(Students user);
+
 
 }
