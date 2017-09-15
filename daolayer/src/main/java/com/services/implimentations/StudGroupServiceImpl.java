@@ -20,6 +20,7 @@ public class StudGroupServiceImpl implements StudGroupService {
         groupDao.save(group);
     }
 
+    @Transactional
     public StudGroup findGroupByName(String name){
         return groupDao.findByName(name);
     }

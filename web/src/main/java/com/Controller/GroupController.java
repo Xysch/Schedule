@@ -8,6 +8,7 @@ import com.entities.Students;
 import com.services.ClassesService;
 import com.services.ProfService;
 import com.services.StudGroupService;
+import com.services.UserService;
 import com.validator.GroupValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,6 +37,9 @@ public class GroupController {
     @Autowired
     private ProfService profService;
 
+    @Autowired
+    private UserService userService;
+
     @RequestMapping(value = "/addgroup", method = RequestMethod.GET)
     public String registration(Model model) {
         model.addAttribute("groupForm", new StudGroup());
@@ -54,7 +58,7 @@ public class GroupController {
 
         service.save(groupForm);
 
-        return "grouplist";
+        return "redirect:/grouplist";
     }
 
     @RequestMapping(value = "/grouplist" , method = RequestMethod.GET)
@@ -102,6 +106,7 @@ public class GroupController {
     @RequestMapping(value = { "/edit-groupname-{id}" }, method = RequestMethod.POST)
     public String editGroupName(@ModelAttribute("groupForm") StudGroup groupForm, BindingResult result, Model model, @PathVariable Long id) {
         List<Classes> classesList = classesService.findByGroup(service.findById(groupForm.getId()));
+        List<Students> studentsList = userService.findAllByGroup(service.findById(groupForm.getId()));
         validator.validate(groupForm, result);
 
         if (result.hasErrors()) {
@@ -112,9 +117,13 @@ public class GroupController {
         for(Classes cls : classesList){
             cls.setGroup(service.findById(groupForm.getId()));
         }
+        for (Students stud : studentsList){
+            stud.setGroup(service.findById(groupForm.getId()));
+        }
+        userService.save(studentsList);
         classesService.save(classesList);
 
-        return "grouplist";
+        return "redirect:/grouplist";
     }
 
 

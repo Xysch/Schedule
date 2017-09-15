@@ -13,7 +13,9 @@
 <body>
 
 <div class="generic-container">
+    <a href="<c:url value='/admin' />">Back</a>
     <div class="panel panel-default">
+
         <!-- Default panel contents -->
         <div class="panel-heading"><span class="lead">List of Users </span></div>
 
@@ -53,7 +55,7 @@ custom-width">delete</a></td>
         </table>
     </div>
     <div class="well">
-        <a href="<c:url value='/registration' />">Add New User</a>
+        <a href="<c:url value='/registration' />">Add New User  </a>
     </div>
 </div>
 

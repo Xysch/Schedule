@@ -59,6 +59,10 @@ public class UserServiceImpl implements UserService {
         userDao.save(user);
     }
 
+    public void save(List<Students> students){
+        userDao.save(students);
+    }
+
     @Transactional
     public Students findById(Long id){
         Students stud = userDao.getOne(id);
@@ -77,6 +81,10 @@ public class UserServiceImpl implements UserService {
 
     public StudGroup getGroupById(Long id){
         return groupDao.findById(id);
+    }
+
+    public List<Students> findAllByGroup(StudGroup group){
+        return userDao.findAllByGroup(group);
     }
 
 

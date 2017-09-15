@@ -59,7 +59,7 @@ public class UserController {
 
         userService.save(userForm);
 
-        return "redirect/students";
+        return "redirect:/students";
     }
 
 
@@ -102,7 +102,7 @@ public class UserController {
 
         userService.updateUser(user);
 
-        return "students";
+        return "redirect:/students";
     }
 
 
@@ -159,27 +159,32 @@ public class UserController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
 
-        StudGroup group = groupService.findById(userService.findByUsername(username).getGroup().getId());
-        TimeComparator timeComparator = new TimeComparator();
-        List<Classes> classesMonday = classesService.findByGroupAndDay(group, "Monday");
-        Collections.sort(classesMonday, timeComparator);
-        List<Classes> classesTuesday = classesService.findByGroupAndDay(group, "Tuesday");
-        Collections.sort(classesTuesday, timeComparator);
-        List<Classes> classesWednesday = classesService.findByGroupAndDay(group, "Wednesday");
-        Collections.sort(classesWednesday, timeComparator);
-        List<Classes> classesThursday = classesService.findByGroupAndDay(group, "Thursday");
-        Collections.sort(classesThursday, timeComparator);
-        List<Classes> classesFriday = classesService.findByGroupAndDay(group, "Friday");
-        Collections.sort(classesFriday, timeComparator);
-        List<Classes> classesSaturday = classesService.findByGroupAndDay(group, "Saturday");
-        Collections.sort(classesSaturday, timeComparator);
+        try {
+            StudGroup group = groupService.findById(userService.findByUsername(username).getGroup().getId());
+            TimeComparator timeComparator = new TimeComparator();
+            List<Classes> classesMonday = classesService.findByGroupAndDay(group, "Monday");
+            Collections.sort(classesMonday, timeComparator);
+            List<Classes> classesTuesday = classesService.findByGroupAndDay(group, "Tuesday");
+            Collections.sort(classesTuesday, timeComparator);
+            List<Classes> classesWednesday = classesService.findByGroupAndDay(group, "Wednesday");
+            Collections.sort(classesWednesday, timeComparator);
+            List<Classes> classesThursday = classesService.findByGroupAndDay(group, "Thursday");
+            Collections.sort(classesThursday, timeComparator);
+            List<Classes> classesFriday = classesService.findByGroupAndDay(group, "Friday");
+            Collections.sort(classesFriday, timeComparator);
+            List<Classes> classesSaturday = classesService.findByGroupAndDay(group, "Saturday");
+            Collections.sort(classesSaturday, timeComparator);
 
-        model.addAttribute("mondayClasses", classesMonday);
-        model.addAttribute("tuesdayClasses", classesTuesday);
-        model.addAttribute("wednesdayClasses", classesWednesday);
-        model.addAttribute("thursdayClasses", classesThursday);
-        model.addAttribute("fridayClasses", classesFriday);
-        model.addAttribute("saturdayClasses", classesSaturday);
+            model.addAttribute("mondayClasses", classesMonday);
+            model.addAttribute("tuesdayClasses", classesTuesday);
+            model.addAttribute("wednesdayClasses", classesWednesday);
+            model.addAttribute("thursdayClasses", classesThursday);
+            model.addAttribute("fridayClasses", classesFriday);
+            model.addAttribute("saturdayClasses", classesSaturday);
+        }
+        catch (NullPointerException e){
+            
+        }
 
         return "userpage";
     }

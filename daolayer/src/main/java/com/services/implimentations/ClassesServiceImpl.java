@@ -38,6 +38,7 @@ public class ClassesServiceImpl implements ClassesService {
         return classesDao.findByDay(day);
     }
 
+    @Transactional
     public Classes findById(Long id){
         return classesDao.findById(id);
     }

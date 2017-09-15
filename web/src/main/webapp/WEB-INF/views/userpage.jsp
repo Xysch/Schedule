@@ -28,6 +28,9 @@
             </tr>
             </thead>
             <tbody>
+            <tr>
+                <th>Monday</th>
+            </tr>
             <c:forEach items="${mondayClasses}" var="mondayClasses">
                 <tr>
                     <td>${mondayClasses.day}</td>
@@ -40,21 +43,9 @@
                 </tr>
             </c:forEach>
             </tbody>
-        </table>
-
-        <table class="table table-hover">
-            <thead>
             <tr>
-                <th>day</th>
-                <th>time</th>
-                <th>aud</th>
-                <th>disc</th>
-                <th>profName</th>
-                <th>groupName</th>
-                <th width="100"></th>
-                <th width="100"></th>
+                <th>Tuesday</th>
             </tr>
-            </thead>
             <tbody>
             <c:forEach items="${tuesdayClasses}" var="tuesdayClasses">
                 <tr>
@@ -68,21 +59,9 @@
                 </tr>
             </c:forEach>
             </tbody>
-        </table>
-
-        <table class="table table-hover">
-            <thead>
             <tr>
-                <th>day</th>
-                <th>time</th>
-                <th>aud</th>
-                <th>disc</th>
-                <th>profName</th>
-                <th>groupName</th>
-                <th width="100"></th>
-                <th width="100"></th>
+                <th>Wednesday</th>
             </tr>
-            </thead>
             <tbody>
             <c:forEach items="${wednesdayClasses}" var="wednesdayClasses">
                 <tr>
@@ -96,21 +75,9 @@
                 </tr>
             </c:forEach>
             </tbody>
-        </table>
-
-        <table class="table table-hover">
-            <thead>
             <tr>
-                <th>day</th>
-                <th>time</th>
-                <th>aud</th>
-                <th>disc</th>
-                <th>profName</th>
-                <th>groupName</th>
-                <th width="100"></th>
-                <th width="100"></th>
+                <th>Thursday</th>
             </tr>
-            </thead>
             <tbody>
             <c:forEach items="${thursdayClasses}" var="thursdayClasses">
                 <tr>
@@ -124,21 +91,9 @@
                 </tr>
             </c:forEach>
             </tbody>
-        </table>
-
-        <table class="table table-hover">
-            <thead>
             <tr>
-                <th>day</th>
-                <th>time</th>
-                <th>aud</th>
-                <th>disc</th>
-                <th>profName</th>
-                <th>groupName</th>
-                <th width="100"></th>
-                <th width="100"></th>
+                <th>Friday</th>
             </tr>
-            </thead>
             <tbody>
             <c:forEach items="${fridayClasses}" var="fridayClasses">
                 <tr>
@@ -152,21 +107,9 @@
                 </tr>
             </c:forEach>
             </tbody>
-        </table>
-
-        <table class="table table-hover">
-            <thead>
             <tr>
-                <th>day</th>
-                <th>time</th>
-                <th>aud</th>
-                <th>disc</th>
-                <th>profName</th>
-                <th>groupName</th>
-                <th width="100"></th>
-                <th width="100"></th>
+                <th>Saturday</th>
             </tr>
-            </thead>
             <tbody>
             <c:forEach items="${saturdayClasses}" var="saturdayClasses">
                 <tr>
@@ -182,7 +125,6 @@
             </tbody>
         </table>
     </div>
-    </h2>
 
 </div>
 <div class="container">

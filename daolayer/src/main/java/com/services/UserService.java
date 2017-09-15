@@ -1,5 +1,6 @@
 package com.services;
 
+import com.entities.Classes;
 import com.entities.StudGroup;
 import com.entities.Students;
 
@@ -20,6 +21,10 @@ public interface UserService{
     StudGroup getGroupById(Long id);
 
     StudGroup findGroupByStudent(Students user);
+
+    List<Students> findAllByGroup(StudGroup group);
+
+    void save(List<Students> students);
 
 
 }

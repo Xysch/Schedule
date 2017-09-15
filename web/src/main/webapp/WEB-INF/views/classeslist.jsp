@@ -11,6 +11,7 @@
 
 <body>
 <div class="generic-container">
+    <a href="<c:url value='/admin' />">Back</a>
     <div class="panel panel-default">
         <!-- Default panel contents -->
         <div class="panel-heading"><span class="lead">Classes list</span></div>

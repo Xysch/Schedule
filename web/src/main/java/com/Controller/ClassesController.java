@@ -1,6 +1,7 @@
 package com.Controller;
 
 import com.entities.Classes;
+import com.entities.StudGroup;
 import com.services.ClassesService;
 import com.services.ProfService;
 import com.services.StudGroupService;
@@ -79,7 +80,10 @@ public class ClassesController {
 
         classesService.save(classesForm);
 
-        return "grouplist";
+        StudGroup group = studGroupService.findById(classesForm.getGroup().getId());
+        String name = group.getName();
+        model.addAttribute("name", name);
+        return "redirect:/classeslist-{name}";
     }
 
     @RequestMapping(value = { "/edit-class-{id}" }, method = RequestMethod.GET)
@@ -99,8 +103,10 @@ public class ClassesController {
         return "addclass";
     }
 
+
     @RequestMapping(value = { "edit-class-{id}" }, method = RequestMethod.POST)
-    public String editGroupName(@ModelAttribute("classesForm") Classes classesForm, BindingResult result, Model model, @PathVariable Long id) {
+    public String editGroupName(@ModelAttribute("classesForm") Classes classesForm, BindingResult result, Model model) {
+
         validator.validate(classesForm, result);
 
         if (result.hasErrors()) {
@@ -109,15 +115,24 @@ public class ClassesController {
 
         classesService.save(classesForm);
 
-        return "grouplist";
+        StudGroup group = studGroupService.findById(classesForm.getGroup().getId());
+        String name = group.getName();
+        model.addAttribute("name", name);
+        return "redirect:/classeslist-{name}";
     }
 
 
-    @RequestMapping(value = { "/delete-class-{id}" }, method = RequestMethod.GET)
-    public String deleteClass(@PathVariable Long id) {
-        classesService.deleteById(id);
 
-        return "grouplist";
+
+    @RequestMapping(value = { "/delete-class-{id}" }, method = RequestMethod.GET)
+    public String deleteClass(@PathVariable Long id, Model model) {
+        Classes classes = classesService.findById(id);
+        StudGroup group = studGroupService.findById(classes.getGroup().getId());
+        String name = group.getName();
+        classesService.deleteById(id);
+        model.addAttribute("name", name);
+
+        return "redirect:/classeslist-{name}";
     }
 
 
